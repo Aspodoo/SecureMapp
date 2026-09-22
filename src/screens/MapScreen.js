@@ -26,7 +26,7 @@ const BOGOTA_CENTER = {
   longitudeDelta: 0.12,
 };
 
-export default function MapScreen() {
+export default function MapScreen({ onNavigateTab }) {
   const [activeTab, setActiveTab] = useState('map');
 
   return (
@@ -78,7 +78,7 @@ export default function MapScreen() {
           <View style={styles.logoContainer}>
             <MaterialIcons name="security" size={24} color="#0095FF" />
             <Text style={styles.logoText}>
-              securem<Text style={styles.redDot}>a</Text>pp
+              SECUREM<Text style={styles.redDot}>A</Text>PP
             </Text>
           </View>
 
@@ -95,55 +95,43 @@ export default function MapScreen() {
         {/* Badge "seguro" */}
         <View style={styles.safeBadge}>
           <Ionicons name="cellular" size={16} color="#FFFFFF" />
-          <Text style={styles.safeBadgeText}>seguro</Text>
+          <Text style={styles.safeBadgeText}>SEGURO</Text>
         </View>
       </SafeAreaView>
 
       {/* --- BARRA INFERIOR --- */}
       <View style={styles.bottomBarContainer}>
         <View style={styles.bottomBar}>
+          {/* Pestaña 1: Mapa (Activo) */}
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'map' && styles.activeTabButton]}
-            onPress={() => setActiveTab('map')}
+            style={[styles.tabButton, styles.activeTabButton]}
+            onPress={() => onNavigateTab && onNavigateTab('map')}
           >
-            <Feather
-              name="map"
-              size={22}
-              color={activeTab === 'map' ? '#0B0F17' : '#94A3B8'}
-            />
+            <Feather name="map" size={22} color="#0B0F17" />
           </TouchableOpacity>
 
+          {/* Pestaña 2: Alertas (Abre la pantalla de reporte) */}
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'alerts' && styles.activeTabButton]}
-            onPress={() => setActiveTab('alerts')}
+            style={styles.tabButton}
+            onPress={() => onNavigateTab && onNavigateTab('alerts')}
           >
-            <Feather
-              name="alert-triangle"
-              size={22}
-              color={activeTab === 'alerts' ? '#0B0F17' : '#FFFFFF'}
-            />
+            <Feather name="alert-triangle" size={22} color="#FFFFFF" />
           </TouchableOpacity>
 
+          {/* Pestaña 3: Chat */}
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'chat' && styles.activeTabButton]}
-            onPress={() => setActiveTab('chat')}
+            style={styles.tabButton}
+            onPress={() => onNavigateTab && onNavigateTab('chat')}
           >
-            <Ionicons
-              name="chatbubble-outline"
-              size={22}
-              color={activeTab === 'chat' ? '#0B0F17' : '#FFFFFF'}
-            />
+            <Ionicons name="chatbubble-outline" size={22} color="#FFFFFF" />
           </TouchableOpacity>
 
+          {/* Pestaña 4: Perfil */}
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'profile' && styles.activeTabButton]}
-            onPress={() => setActiveTab('profile')}
+            style={styles.tabButton}
+            onPress={() => onNavigateTab && onNavigateTab('profile')}
           >
-            <Feather
-              name="user"
-              size={22}
-              color={activeTab === 'profile' ? '#0B0F17' : '#FFFFFF'}
-            />
+            <Feather name="user" size={22} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
       </View>
