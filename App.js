@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import MapScreen from './src/screens/MapScreen';
 import ReportScreen from './src/screens/ReportScreen';
+import CommunityScreen from './src/screens/ChatIAScreen';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('map');
@@ -16,6 +17,11 @@ export default function App() {
       {currentTab === 'alerts' && (
         <ReportScreen
           onBack={() => setCurrentTab('map')}
+          onNavigateTab={(tab) => setCurrentTab(tab)}
+        />
+      )}
+      {currentTab === 'chat' && (
+        <CommunityScreen
           onNavigateTab={(tab) => setCurrentTab(tab)}
         />
       )}
