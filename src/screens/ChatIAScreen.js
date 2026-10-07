@@ -16,7 +16,7 @@ export default function ChatAIScreen({ onBack, onNavigateTab }) {
     {
       id: '1',
       sender: 'aegis',
-      text: 'Hola soy Aegis, como puedo ayudarte ?😊',
+      text: 'Hola soy Aegis, como puedo ayudarte ?',
     },
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -103,7 +103,7 @@ export default function ChatAIScreen({ onBack, onNavigateTab }) {
       {/* --- CAJA DE ENTRADA INFERIOR (ESTILO WIREFRAME) --- */}
       <View style={styles.inputCard}>
         <TextInput
-          placeholder="Que deseas preguntar a Aegis😊"
+          placeholder="Que deseas preguntar a Aegis"
           placeholderTextColor="#CBD5E1"
           style={styles.textInput}
           value={inputMessage}
