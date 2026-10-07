@@ -33,7 +33,7 @@ export default function ChatAIScreen({ onBack, onNavigateTab }) {
     setMessages((prev) => [...prev, userMsg]);
     setInputMessage('');
 
-    // Respuesta simulada de Aegis
+    // Respuesta Automatica de IA Aegis
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,

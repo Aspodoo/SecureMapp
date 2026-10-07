@@ -8,8 +8,9 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  ScrollView,
 } from 'react-native';
-import { Ionicons, Feather, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, Feather, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 let MapView, Marker, PROVIDER_DEFAULT;
 if (Platform.OS !== 'web') {
@@ -28,6 +29,7 @@ const BOGOTA_CENTER = {
 
 export default function MapScreen({ onNavigateTab }) {
   const [activeTab, setActiveTab] = useState('map');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para abrir/cerrar el Login
 
   return (
     <View style={styles.container}>
@@ -71,14 +73,15 @@ export default function MapScreen({ onNavigateTab }) {
       {/* --- ENCABEZADO SUPERIOR --- */}
       <SafeAreaView style={styles.headerSafeArea}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerButton}>
+          {/* Botón de 3 puntos modificado para abrir el Login */}
+          <TouchableOpacity style={styles.headerButton} onPress={() => setIsDrawerOpen(true)}>
             <Feather name="more-vertical" size={22} color="#FFFFFF" />
           </TouchableOpacity>
 
           <View style={styles.logoContainer}>
             <MaterialIcons name="security" size={24} color="#0095FF" />
             <Text style={styles.logoText}>
-              SECUREM<Text style={styles.redDot}>A</Text>PP
+              securem<Text style={styles.redDot}>a</Text>pp
             </Text>
           </View>
 
@@ -95,14 +98,13 @@ export default function MapScreen({ onNavigateTab }) {
         {/* Badge "seguro" */}
         <View style={styles.safeBadge}>
           <Ionicons name="cellular" size={16} color="#FFFFFF" />
-          <Text style={styles.safeBadgeText}>SEGURO</Text>
+          <Text style={styles.safeBadgeText}>seguro</Text>
         </View>
       </SafeAreaView>
 
       {/* --- BARRA INFERIOR --- */}
       <View style={styles.bottomBarContainer}>
         <View style={styles.bottomBar}>
-          {/* Pestaña 1: Mapa (Activo) */}
           <TouchableOpacity
             style={[styles.tabButton, styles.activeTabButton]}
             onPress={() => onNavigateTab && onNavigateTab('map')}
@@ -110,7 +112,6 @@ export default function MapScreen({ onNavigateTab }) {
             <Feather name="map" size={22} color="#0B0F17" />
           </TouchableOpacity>
 
-          {/* Pestaña 2: Alertas (Abre la pantalla de reporte) */}
           <TouchableOpacity
             style={styles.tabButton}
             onPress={() => onNavigateTab && onNavigateTab('alerts')}
@@ -118,15 +119,18 @@ export default function MapScreen({ onNavigateTab }) {
             <Feather name="alert-triangle" size={22} color="#FFFFFF" />
           </TouchableOpacity>
 
-          {/* Pestaña 3: Chat */}
           <TouchableOpacity
             style={styles.tabButton}
             onPress={() => onNavigateTab && onNavigateTab('chat')}
           >
-            <Ionicons name="chatbubble-outline" size={22} color="#FFFFFF" />
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons name="chatbubble-outline" size={24} color="#FFFFFF" />
+              <Text style={{ position: 'absolute', fontSize: 9, fontWeight: 'bold', color: '#FFFFFF', top: 5 }}>
+                IA
+              </Text>
+            </View>
           </TouchableOpacity>
 
-          {/* Pestaña 4: Perfil */}
           <TouchableOpacity
             style={styles.tabButton}
             onPress={() => onNavigateTab && onNavigateTab('profile')}
@@ -135,6 +139,84 @@ export default function MapScreen({ onNavigateTab }) {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* --- MENÚ LATERAL (DRAWER) DE INICIO DE SESIÓN --- */}
+      {isDrawerOpen && (
+        <View style={styles.drawerOverlay}>
+          {/* Panel principal izquierdo */}
+          <View style={styles.drawerContent}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.drawerScroll}>
+              
+              {/* Logo Gigante */}
+              <View style={styles.drawerLogoContainer}>
+                <MaterialIcons name="security" size={60} color="#0095FF" style={{ marginBottom: 4 }} />
+                <Text style={styles.drawerLogoText}>
+                  securem<Text style={styles.redDot}>a</Text>pp
+                </Text>
+              </View>
+
+              {/* Formulario */}
+              <Text style={styles.inputLabel}>Correo Electronico</Text>
+              <TextInput
+                style={styles.drawerInput}
+                placeholder="Value"
+                placeholderTextColor="#64748B"
+                keyboardType="email-address"
+              />
+
+              <Text style={styles.inputLabel}>Password</Text>
+              <TextInput
+                style={styles.drawerInput}
+                placeholder="Value"
+                placeholderTextColor="#64748B"
+                secureTextEntry={true}
+              />
+
+              {/* Botón Iniciar Sesión */}
+              <TouchableOpacity style={styles.loginButton}>
+                <Text style={styles.loginButtonText}>Iniciar Sesion</Text>
+              </TouchableOpacity>
+
+              {/* Separador */}
+              <Text style={styles.dividerText}>______o continua con______</Text>
+
+              {/* Redes Sociales */}
+              <View style={styles.socialRow}>
+                <TouchableOpacity style={[styles.socialBtn, styles.socialBtnGoogle]}>
+                  <FontAwesome name="google" size={14} color="#EA4335" style={styles.socialIcon} />
+                  <Text style={[styles.socialTextBase, styles.socialTextGoogle]}>Google</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.socialBtn, styles.socialBtnFb]}>
+                  <FontAwesome name="facebook" size={14} color="#FFFFFF" style={styles.socialIcon} />
+                  <Text style={[styles.socialTextBase, styles.socialTextFb]}>Facebook</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.socialBtn, styles.socialBtnApple]}>
+                  <FontAwesome name="apple" size={14} color="#FFFFFF" style={styles.socialIcon} />
+                  <Text style={[styles.socialTextBase, styles.socialTextApple]}>Apple</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Registrarse */}
+              <View style={styles.registerContainer}>
+                <Text style={styles.registerTextPrompt}>¿No tienes cuenta?</Text>
+                <TouchableOpacity>
+                  <Text style={styles.registerTextLink}>Registrarse</Text>
+                </TouchableOpacity>
+              </View>
+
+            </ScrollView>
+          </View>
+
+          {/* Área oscura a la derecha para cerrar el menú al tocarla */}
+          <TouchableOpacity
+            style={styles.drawerBackdrop}
+            activeOpacity={1}
+            onPress={() => setIsDrawerOpen(false)}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -284,6 +366,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.4,
     shadowOffset: { width: 0, height: 4 },
+    borderWidth: 1,
+    borderColor: '#1E293B',
   },
   tabButton: {
     width: 48,
@@ -294,5 +378,119 @@ const styles = StyleSheet.create({
   },
   activeTabButton: {
     backgroundColor: '#FFFFFF',
+  },
+
+  /* --- ESTILOS DEL MENÚ LATERAL (DRAWER) --- */
+  drawerOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    zIndex: 999,
+    elevation: 999,
+  },
+  drawerBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  drawerContent: {
+    width: '75%', // Ocupa la mayor parte de la pantalla izquierda
+    backgroundColor: '#070B11',
+    borderRightWidth: 1,
+    borderRightColor: '#1E293B',
+  },
+  drawerScroll: {
+    paddingHorizontal: 24,
+    paddingTop: 80,
+    paddingBottom: 40,
+  },
+  drawerLogoContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  drawerLogoText: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  inputLabel: {
+    color: '#CBD5E1',
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  drawerInput: {
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    color: '#FFFFFF',
+    fontSize: 14,
+    marginBottom: 24,
+    outlineStyle: 'none',
+  },
+  loginButton: {
+    backgroundColor: '#2A2A2A',
+    borderRadius: 8,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  loginButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  dividerText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  socialRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 48,
+    gap: 8,
+  },
+  socialBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderRadius: 16,
+    flex: 1,
+  },
+  socialBtnGoogle: {
+    backgroundColor: '#FFFFFF',
+  },
+  socialBtnFb: {
+    backgroundColor: '#1877F2',
+  },
+  socialBtnApple: {
+    backgroundColor: '#000000',
+  },
+  socialIcon: {
+    marginRight: 6,
+  },
+  socialTextBase: {
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  socialTextGoogle: { color: '#000000' },
+  socialTextFb: { color: '#FFFFFF' },
+  socialTextApple: { color: '#FFFFFF' },
+  registerContainer: {
+    alignItems: 'center',
+  },
+  registerTextPrompt: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  registerTextLink: {
+    color: '#0055FF',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
